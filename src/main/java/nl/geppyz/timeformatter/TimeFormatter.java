@@ -10,6 +10,20 @@ import nl.geppyz.timeformatter.configuration.TimeUnitLabel;
 public class TimeFormatter {
 
   /**
+   * Formats a given duration in milliseconds into a human-readable string representation using the default time format
+   * configuration.
+   * <p>
+   * The method leverages the predefined {@code TimeFormatConfiguration.DEFAULT} to determine the time unit selection,
+   * whether zero-value units should be displayed, and the format style.
+   *
+   * @param millis the duration in milliseconds to be formatted
+   * @return a string representation of the formatted duration based on the default configuration
+   */
+  protected String format(long millis) {
+    return format(millis, TimeFormatConfiguration.DEFAULT);
+  }
+
+  /**
    * Formats a given duration in milliseconds into a human-readable string representation based on the provided
    * configuration. The format is determined by the configured time unit selection (HOURS, MINUTES, or SECONDS) and
    * whether zero-value units should be displayed.

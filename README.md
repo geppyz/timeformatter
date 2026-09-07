@@ -31,7 +31,12 @@ public class Main {
         TimeFormatter formatter = new TimeFormatter();
         long millis = 7414000L; // 2 hours, 3 minutes, 34 seconds
 
-        // Example 1: Full format with hours, minutes, and seconds
+       // Example 1: Default configuration
+       String fullResult = formatter.format(millis);
+       System.out.println(fullResult);
+       // Output: "2 hours 3 minutes 34 seconds"
+       
+        // Example 2: Full format with hours, minutes, and seconds
         TimeFormatConfiguration fullConfig = new TimeFormatConfiguration(
                 TimeSelection.HOURS,
                 TimeFormatStyle.FULL,
@@ -41,7 +46,7 @@ public class Main {
         System.out.println(fullResult);
         // Output: "2 hours 3 minutes 34 seconds"
 
-        // Example 2: Compact / Short format hiding zero-value units
+        // Example 3: Compact / Short format hiding zero-value units
         TimeFormatConfiguration shortConfig = new TimeFormatConfiguration(
                 TimeSelection.HOURS,
                 TimeFormatStyle.SHORT,
@@ -51,7 +56,7 @@ public class Main {
         System.out.println(shortResult);
         // Output: "2h 3m 34s"
 
-        // Example 3: Minutes-only selection hiding zero units
+        // Example 4: Minutes-only selection hiding zero units
         long shortDurationMillis = 214000L; // 3 minutes, 34 seconds
         TimeFormatConfiguration minutesConfig = new TimeFormatConfiguration(
                 TimeSelection.MINUTES,
