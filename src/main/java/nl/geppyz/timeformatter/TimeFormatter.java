@@ -23,7 +23,7 @@ public class TimeFormatter {
    * @param millis the duration in milliseconds to be formatted
    * @return a string representation of the formatted duration based on the default configuration
    */
-  protected String format(long millis) {
+  public String format(long millis) {
     return format(millis, TimeFormatConfiguration.DEFAULT);
   }
 
@@ -37,7 +37,7 @@ public class TimeFormatter {
    *                      what format style to use
    * @return a string representation of the formatted duration based on the given configuration
    */
-  protected String format(long millis, TimeFormatConfiguration configuration) {
+  public String format(long millis, TimeFormatConfiguration configuration) {
     Objects.requireNonNull(configuration, "Time format configuration is required.");
     Duration duration = Duration.ofMillis(millis);
     List<String> timeStringParts = new ArrayList<>();
