@@ -20,6 +20,10 @@ tasks.test {
     useJUnitPlatform()
 }
 
+tasks.named<Javadoc>("javadoc") {
+    options.encoding = "UTF-8"
+}
+
 publishing {
     publications {
         create<MavenPublication>("gpr") {
