@@ -5,26 +5,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-public class TimeFormatterTest {
+class TimeFormatterTest {
 
   /**
-   * Test method for {@link nl.geppyz.timeformatter.TimeFormatter#format(long)}. Given a number of milliseconds (as an
-   * input), which represents the time a certain task took to complete, return a String representation that converts
-   * milliseconds into seconds in the given format: 3 seconds. Any leftover milliseconds should be truncated.
+   * Modify the previous code to format the milliseconds into minutes and seconds. 3 minutes 34 seconds, 5 minutes 0
+   * seconds, 0 minutes 59 seconds.
    */
   @Nested
-  class Task1 {
+  class Task2 {
 
     @Test
-    void format_test10Seconds() {
+    void format_testMinutesAndSeconds() {
       TimeFormatter formatter = new TimeFormatter();
-      assertEquals("10 seconds", formatter.format(10000));
-    }
-
-    @Test
-    void format_test10Seconds_withLeftoverMillis() {
-      TimeFormatter formatter = new TimeFormatter();
-      assertEquals("10 seconds", formatter.format(10145));
+      assertEquals("3 minutes 34 seconds", formatter.format(214000));
+      assertEquals("5 minutes 0 seconds", formatter.format(300000));
+      assertEquals("0 minutes 59 seconds", formatter.format(59000));
     }
   }
 }
