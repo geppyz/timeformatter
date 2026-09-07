@@ -2,6 +2,7 @@ package nl.geppyz.timeformatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import nl.geppyz.timeformatter.configuration.TimeFormatConfiguration;
 import nl.geppyz.timeformatter.configuration.TimeSelection;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,13 +20,15 @@ class TimeFormatterTest {
     @Test
     void format_test10Seconds() {
       TimeFormatter formatter = new TimeFormatter();
-      assertEquals("10 seconds", formatter.format(10000, TimeSelection.SECONDS));
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.SECONDS, true);
+      assertEquals("10 seconds", formatter.format(10000, config));
     }
 
     @Test
     void format_test10Seconds_withLeftoverMillis() {
       TimeFormatter formatter = new TimeFormatter();
-      assertEquals("10 seconds", formatter.format(10145, TimeSelection.SECONDS));
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.SECONDS, true);
+      assertEquals("10 seconds", formatter.format(10145, config));
     }
   }
 
@@ -39,9 +42,10 @@ class TimeFormatterTest {
     @Test
     void format_testMinutesAndSeconds() {
       TimeFormatter formatter = new TimeFormatter();
-      assertEquals("3 minutes 34 seconds", formatter.format(214000, TimeSelection.MINUTES));
-      assertEquals("5 minutes 0 seconds", formatter.format(300000, TimeSelection.MINUTES));
-      assertEquals("0 minutes 59 seconds", formatter.format(59000, TimeSelection.MINUTES));
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.MINUTES, true);
+      assertEquals("3 minutes 34 seconds", formatter.format(214000, config));
+      assertEquals("5 minutes 0 seconds", formatter.format(300000, config));
+      assertEquals("0 minutes 59 seconds", formatter.format(59000, config));
     }
   }
 
@@ -55,10 +59,29 @@ class TimeFormatterTest {
     @Test
     void format_testMinutesAndSeconds() {
       TimeFormatter formatter = new TimeFormatter();
-      assertEquals("0 hours 3 minutes 34 seconds", formatter.format(214000, TimeSelection.HOURS));
-      assertEquals("1 hours 5 minutes 0 seconds", formatter.format(3900000, TimeSelection.HOURS));
-      assertEquals("3 hours 0 minutes 59 seconds", formatter.format(10859000, TimeSelection.HOURS));
-      assertEquals("5 hours 3 minutes 34 seconds", formatter.format(18214000, TimeSelection.HOURS));
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS, true);
+      assertEquals("0 hours 3 minutes 34 seconds", formatter.format(214000, config));
+      assertEquals("1 hours 5 minutes 0 seconds", formatter.format(3900000, config));
+      assertEquals("3 hours 0 minutes 59 seconds", formatter.format(10859000, config));
+      assertEquals("5 hours 3 minutes 34 seconds", formatter.format(18214000, config));
+    }
+  }
+
+  /**
+   * Extend the previous code to show/hide the unit if the value is zero. 3 minutes 34 seconds, 1 hours 5 minutes, 3 hours
+   * 59 seconds, 3 hours 2 minutes 59 seconds
+   */
+  @Nested
+  class Task4 {
+
+    @Test
+    void format_testHideUnitIfZero() {
+      TimeFormatter formatter = new TimeFormatter();
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS, false);
+      assertEquals("3 minutes 34 seconds", formatter.format(214000, config));
+      assertEquals("1 hours 5 minutes", formatter.format(3900000, config));
+      assertEquals("3 hours 59 seconds", formatter.format(10859000, config));
+      assertEquals("3 hours 2 minutes 59 seconds", formatter.format(10979000, config));
     }
   }
 }
