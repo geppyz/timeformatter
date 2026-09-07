@@ -107,4 +107,15 @@ class TimeFormatterTest {
       assertEquals("2h 3m 34s", formatter.format(7414000, config));
     }
   }
+
+  @Nested
+  class DefaultConfiguration {
+
+    @Test
+    void format_defaultFull() {
+      TimeFormatter formatter = new TimeFormatter();
+      assertEquals("1 hours 5 minutes", formatter.format(3900000));
+      assertEquals("2 hours 3 minutes 34 seconds", formatter.format(7414000, TimeFormatConfiguration.DEFAULT));
+    }
+  }
 }
