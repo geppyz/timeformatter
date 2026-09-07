@@ -1,9 +1,8 @@
 package nl.geppyz.timeformatter.configuration;
 
 /**
- * Represents a unit of time with both full and short labels.
- * This enum provides methods to retrieve the labels in various formats
- * for a given {@link TimeFormatStyle}.
+ * Represents a unit of time with both full and short labels. This enum provides methods to retrieve the labels in
+ * various formats for a given {@link TimeFormatStyle}.
  */
 public enum TimeUnitLabel {
 
