@@ -5,15 +5,15 @@ package nl.geppyz.timeformatter.configuration;
  */
 public enum TimeSelection {
   /**
-   * Seconds (only seconds)
+   * Only seconds
    */
-  SECONDS,
+  ONLY_SECONDS,
   /**
-   * Minutes (minutes and seconds)
+   * Minutes and seconds
    */
-  MINUTES,
+  MINUTES_AND_SECONDS,
   /**
-   * Hours (hours, minutes and seconds)
+   * Hours, minutes and seconds
    */
-  HOURS
+  HOURS_MINUTES_AND_SECONDS
 }

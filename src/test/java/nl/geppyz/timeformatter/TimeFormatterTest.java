@@ -1,6 +1,7 @@
 package nl.geppyz.timeformatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import nl.geppyz.timeformatter.configuration.TimeFormatConfiguration;
 import nl.geppyz.timeformatter.configuration.TimeFormatStyle;
@@ -21,14 +22,16 @@ class TimeFormatterTest {
     @Test
     void format_test10Seconds() {
       TimeFormatter formatter = new TimeFormatter();
-      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.SECONDS, TimeFormatStyle.FULL, true);
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.ONLY_SECONDS, TimeFormatStyle.FULL,
+          true);
       assertEquals("10 seconds", formatter.format(10000, config));
     }
 
     @Test
     void format_test10Seconds_withLeftoverMillis() {
       TimeFormatter formatter = new TimeFormatter();
-      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.SECONDS, TimeFormatStyle.FULL, true);
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.ONLY_SECONDS, TimeFormatStyle.FULL,
+          true);
       assertEquals("10 seconds", formatter.format(10145, config));
     }
   }
@@ -43,7 +46,8 @@ class TimeFormatterTest {
     @Test
     void format_testMinutesAndSeconds() {
       TimeFormatter formatter = new TimeFormatter();
-      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.MINUTES, TimeFormatStyle.FULL, true);
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.MINUTES_AND_SECONDS,
+          TimeFormatStyle.FULL, true);
       assertEquals("3 minutes 34 seconds", formatter.format(214000, config));
       assertEquals("5 minutes 0 seconds", formatter.format(300000, config));
       assertEquals("0 minutes 59 seconds", formatter.format(59000, config));
@@ -60,7 +64,8 @@ class TimeFormatterTest {
     @Test
     void format_testMinutesAndSeconds() {
       TimeFormatter formatter = new TimeFormatter();
-      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS, TimeFormatStyle.FULL, true);
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS_MINUTES_AND_SECONDS,
+          TimeFormatStyle.FULL, true);
       assertEquals("0 hours 3 minutes 34 seconds", formatter.format(214000, config));
       assertEquals("1 hours 5 minutes 0 seconds", formatter.format(3900000, config));
       assertEquals("3 hours 0 minutes 59 seconds", formatter.format(10859000, config));
@@ -78,7 +83,8 @@ class TimeFormatterTest {
     @Test
     void format_testHideUnitIfZero() {
       TimeFormatter formatter = new TimeFormatter();
-      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS, TimeFormatStyle.FULL, false);
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS_MINUTES_AND_SECONDS,
+          TimeFormatStyle.FULL, false);
       assertEquals("3 minutes 34 seconds", formatter.format(214000, config));
       assertEquals("1 hours 5 minutes", formatter.format(3900000, config));
       assertEquals("3 hours 59 seconds", formatter.format(10859000, config));
@@ -96,14 +102,16 @@ class TimeFormatterTest {
     @Test
     void format_testFullFormat() {
       TimeFormatter formatter = new TimeFormatter();
-      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS, TimeFormatStyle.FULL, true);
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS_MINUTES_AND_SECONDS,
+          TimeFormatStyle.FULL, true);
       assertEquals("2 hours 3 minutes 34 seconds", formatter.format(7414000, config));
     }
 
     @Test
     void format_testShortFormat() {
       TimeFormatter formatter = new TimeFormatter();
-      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS, TimeFormatStyle.SHORT, false);
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS_MINUTES_AND_SECONDS,
+          TimeFormatStyle.SHORT, false);
       assertEquals("2h 3m 34s", formatter.format(7414000, config));
     }
   }
@@ -116,6 +124,104 @@ class TimeFormatterTest {
       TimeFormatter formatter = new TimeFormatter();
       assertEquals("1 hours 5 minutes", formatter.format(3900000));
       assertEquals("2 hours 3 minutes 34 seconds", formatter.format(7414000, TimeFormatConfiguration.DEFAULT));
+    }
+  }
+
+  /**
+   * Tests for edge cases that have no clear requirements yet.
+   */
+  @Nested
+  class UnsolvedEdgeCases {
+
+    private static final long TWO_DAYS = 172800000;
+
+    @Test
+    void format_testZeroFullFormat() {
+      TimeFormatter formatter = new TimeFormatter();
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS_MINUTES_AND_SECONDS,
+          TimeFormatStyle.FULL, true);
+      assertEquals("0 hours 0 minutes 0 seconds", formatter.format(0, config));
+    }
+
+    @Test
+    void format_testZeroShortFormat() {
+      TimeFormatter formatter = new TimeFormatter();
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS_MINUTES_AND_SECONDS,
+          TimeFormatStyle.SHORT, true);
+      assertEquals("0h 0m 0s", formatter.format(0, config));
+    }
+
+    @Test
+    void format_testZeroFullFormat_noShowZero() {
+      TimeFormatter formatter = new TimeFormatter();
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS_MINUTES_AND_SECONDS,
+          TimeFormatStyle.FULL, false);
+      assertEquals("", formatter.format(0, config));
+    }
+
+    @Test
+    void format_testZeroShortFormat_noShowZero() {
+      TimeFormatter formatter = new TimeFormatter();
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS_MINUTES_AND_SECONDS,
+          TimeFormatStyle.SHORT, false);
+      assertEquals("", formatter.format(0, config));
+    }
+
+    @Test
+    void format_testNegativeFullFormat() {
+      TimeFormatter formatter = new TimeFormatter();
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS_MINUTES_AND_SECONDS,
+          TimeFormatStyle.FULL, true);
+      assertEquals("0 hours 0 minutes -1 seconds", formatter.format(-1, config));
+    }
+
+    @Test
+    void format_testNagativeShortFormat() {
+      TimeFormatter formatter = new TimeFormatter();
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS_MINUTES_AND_SECONDS,
+          TimeFormatStyle.SHORT, true);
+      assertEquals("-1h -1m -1s", formatter.format(-3661000, config));
+    }
+
+    @Test
+    void format_testOnlySeconds_moreThanAMinute() {
+      TimeFormatter formatter = new TimeFormatter();
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.ONLY_SECONDS,
+          TimeFormatStyle.SHORT, false);
+      assertEquals("172800s", formatter.format(TWO_DAYS, config));
+    }
+
+    @Test
+    void format_testMinutesAndSeconds_moreThanAHour() {
+      TimeFormatter formatter = new TimeFormatter();
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.MINUTES_AND_SECONDS,
+          TimeFormatStyle.SHORT, false);
+      assertEquals("2880m", formatter.format(TWO_DAYS, config));
+    }
+
+    @Test
+    void format_testHoursMinutesAndSeconds_moreThanADay() {
+      TimeFormatter formatter = new TimeFormatter();
+      TimeFormatConfiguration config = new TimeFormatConfiguration(TimeSelection.HOURS_MINUTES_AND_SECONDS,
+          TimeFormatStyle.SHORT, false);
+      assertEquals("48h", formatter.format(TWO_DAYS, config));
+    }
+  }
+
+  /**
+   * Tests for exception handling scenarios.
+   */
+  @Nested
+  class ExceptionHandling {
+
+    @Test
+    void testFormatter_nullConfig() {
+      TimeFormatter formatter = new TimeFormatter();
+      NullPointerException exception = assertThrows(
+          NullPointerException.class,
+          () -> formatter.format(0, null)
+      );
+      assertEquals("Time format configuration is required.", exception.getMessage());
     }
   }
 }

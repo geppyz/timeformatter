@@ -38,7 +38,7 @@ public class Main {
        
         // Example 2: Full format with hours, minutes, and seconds
         TimeFormatConfiguration fullConfig = new TimeFormatConfiguration(
-                TimeSelection.HOURS,
+                TimeSelection.HOURS_MINUTES_AND_SECONDS,
                 TimeFormatStyle.FULL,
                 true // showZeroUnits
         );
@@ -48,7 +48,7 @@ public class Main {
 
         // Example 3: Compact / Short format hiding zero-value units
         TimeFormatConfiguration shortConfig = new TimeFormatConfiguration(
-                TimeSelection.HOURS,
+                TimeSelection.HOURS_MINUTES_AND_SECONDS,
                 TimeFormatStyle.SHORT,
                 false // showZeroUnits
         );
@@ -59,7 +59,7 @@ public class Main {
         // Example 4: Minutes-only selection hiding zero units
         long shortDurationMillis = 214000L; // 3 minutes, 34 seconds
         TimeFormatConfiguration minutesConfig = new TimeFormatConfiguration(
-                TimeSelection.MINUTES,
+                TimeSelection.MINUTES_AND_SECONDS,
                 TimeFormatStyle.FULL,
                 false // showZeroUnits
         );
@@ -74,9 +74,9 @@ public class Main {
 When instantiating `TimeFormatConfiguration(TimeSelection timeSelection, TimeFormatStyle timeFormatStyle, boolean showZeroUnits)`:
 
 1. `TimeSelection`
-    - `TimeSelection.HOURS`: Formats hours, minutes, and seconds.
-    - `TimeSelection.MINUTES`: Formats minutes and seconds.
-    - `TimeSelection.SECONDS`: Formats seconds only. Any remaining sub-second milliseconds are truncated.
+    - `TimeSelection.HOURS_MINUTES_AND_SECONDS`: Formats hours, minutes, and seconds.
+    - `TimeSelection.MINUTES_AND_SECONDS`: Formats minutes and seconds.
+    - `TimeSelection.ONLY_SECONDS`: Formats seconds only. Sub-second milliseconds are truncated.
 
 2. `TimeFormatStyle`
     - `TimeFormatStyle.FULL`: Uses full unit names (e.g., `2 hours 3 minutes 34 seconds`).
@@ -95,7 +95,7 @@ When instantiating `TimeFormatConfiguration(TimeSelection timeSelection, TimeFor
 - Clone the repository
 - Open the project in your IDE
 - Run the tests with gradle `./gradlew clean test`
-- Use a Test Driver Development approach when developing new features
+- Use a Test Driven Development approach when developing new features
 
 ## Github Workflows
 - Dependabot is configured to automatically update dependencies

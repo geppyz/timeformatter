@@ -3,10 +3,14 @@ package nl.geppyz.timeformatter;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import nl.geppyz.timeformatter.configuration.TimeFormatConfiguration;
 import nl.geppyz.timeformatter.configuration.TimeFormatStyle;
 import nl.geppyz.timeformatter.configuration.TimeUnitLabel;
 
+/**
+ * Provides methods for formatting milliseconds into human-readable strings based on specified configurations.
+ */
 public class TimeFormatter {
 
   /**
@@ -34,19 +38,20 @@ public class TimeFormatter {
    * @return a string representation of the formatted duration based on the given configuration
    */
   protected String format(long millis, TimeFormatConfiguration configuration) {
+    Objects.requireNonNull(configuration, "Time format configuration is required.");
     Duration duration = Duration.ofMillis(millis);
     List<String> timeStringParts = new ArrayList<>();
     switch (configuration.timeSelection()) {
-      case HOURS -> {
+      case HOURS_MINUTES_AND_SECONDS -> {
         addTimePart(timeStringParts, duration.toHours(), TimeUnitLabel.HOURS, configuration);
         addTimePart(timeStringParts, duration.toMinutesPart(), TimeUnitLabel.MINUTES, configuration);
         addTimePart(timeStringParts, duration.toSecondsPart(), TimeUnitLabel.SECONDS, configuration);
       }
-      case MINUTES -> {
+      case MINUTES_AND_SECONDS -> {
         addTimePart(timeStringParts, duration.toMinutes(), TimeUnitLabel.MINUTES, configuration);
         addTimePart(timeStringParts, duration.toSecondsPart(), TimeUnitLabel.SECONDS, configuration);
       }
-      case SECONDS -> addTimePart(timeStringParts, duration.toSecondsPart(), TimeUnitLabel.SECONDS, configuration);
+      case ONLY_SECONDS -> addTimePart(timeStringParts, duration.toSeconds(), TimeUnitLabel.SECONDS, configuration);
     }
     return String.join(" ", timeStringParts);
   }
