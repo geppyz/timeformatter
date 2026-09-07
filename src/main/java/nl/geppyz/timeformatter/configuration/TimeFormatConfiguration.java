@@ -1,5 +1,5 @@
 package nl.geppyz.timeformatter.configuration;
 
-public record TimeFormatConfiguration(TimeSelection timeSelection, boolean showZeroUnits) {
+public record TimeFormatConfiguration(TimeSelection timeSelection, TimeFormatStyle timeFormatStyle, boolean showZeroUnits) {
 
 }
